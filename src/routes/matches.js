@@ -7,6 +7,7 @@ import {
   listMatchesQuerySchema,
 } from "../validation/matches.js";
 import { desc } from "drizzle-orm";
+import { z } from "zod";
 
 const MAX_LIMIT = 100;
 
@@ -18,7 +19,7 @@ matchesRouter
     if (!parsedBody.success) {
       return res.status(400).json({
         error: "Query validation failed",
-        details: parsedBody.error,
+        details: z.flattenError(parsedBody.error),
       });
     }
 
@@ -41,7 +42,7 @@ matchesRouter
     if (!parsedBody.success) {
       return res.status(400).json({
         error: "Payload validation failed",
-        details: parsedBody.error.flatten(),
+        details: z.flattenError(parsedBody.error),
       });
     }
 

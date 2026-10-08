@@ -66,7 +66,9 @@ matchesRouter
           status: getMatchStatus(startTime, endTime),
         })
         .returning();
-
+      if (req.app.locals.broadcastMatchCreated) {
+        req.app.locals.broadcastMatchCreated(event);
+      }
       return res.status(201).json(event);
     } catch (error) {
       console.error("Failed to create match:", error);
